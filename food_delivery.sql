@@ -1,6 +1,6 @@
--- Tạo database food_delivery
-CREATE DATABASE food_delivery;
-USE food_delivery;
+-- Tạo database db_cyber_food_delivery
+CREATE DATABASE db_cyber_food_delivery;
+USE db_cyber_food_delivery;
 
 -- Tạo bảng user
 CREATE TABLE user (
@@ -10,6 +10,14 @@ CREATE TABLE user (
     password VARCHAR(100)
 );
 
+-- Thêm dữ liệu cho bảng user
+INSERT INTO user (full_name, email, password) VALUES
+('Nguyễn Văn A', 'nguyenvana@gmail.com', '123456'),
+('Trần Thị B', 'tranthib@gmail.com', '123456'),
+('Lê Văn C', 'levanc@gmail.com', '123456'),
+('Phạm Thị D', 'phamthid@gmail.com', '123456'),
+('Hoàng Văn E', 'hoangvane@gmail.com', '123456');
+
 -- Tạo bảng restaurant 
 CREATE TABLE restaurant (
     res_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -17,6 +25,13 @@ CREATE TABLE restaurant (
     image VARCHAR(255),
     description TEXT
 );
+
+-- Thêm dữ liệu cho bảng restaurant
+INSERT INTO restaurant (res_name, image, description) VALUES
+('Nhà hàng A', 'https://picsum.photos/200/300', 'Nhà hàng chuyên đồ Á'),
+('Nhà hàng B', 'https://picsum.photos/200/300', 'Nhà hàng chuyên đồ Âu'), 
+('Nhà hàng C', 'https://picsum.photos/200/300', 'Nhà hàng buffet'),
+('Nhà hàng D', 'https://picsum.photos/200/300', 'Nhà hàng hải sản');
 
 -- Tạo bảng rate_res
 CREATE TABLE rate_res (
@@ -28,6 +43,13 @@ CREATE TABLE rate_res (
     FOREIGN KEY (res_id) REFERENCES restaurant(res_id)
 );
 
+-- Thêm dữ liệu cho bảng rate_res
+INSERT INTO rate_res (user_id, res_id, amount, date_rate) VALUES
+(1, 1, 5, '2024-01-01 10:00:00'),
+(2, 1, 4, '2024-01-02 11:00:00'),
+(3, 2, 5, '2024-01-03 12:00:00'),
+(4, 3, 3, '2024-01-04 13:00:00');
+
 -- Tạo bảng like_res  
 CREATE TABLE like_res (
     user_id INT,
@@ -36,6 +58,14 @@ CREATE TABLE like_res (
     FOREIGN KEY (user_id) REFERENCES user(user_id),
     FOREIGN KEY (res_id) REFERENCES restaurant(res_id)
 );
+
+-- Thêm dữ liệu cho bảng like_res
+INSERT INTO like_res (user_id, res_id, date_like) VALUES
+(1, 1, '2024-01-01 10:00:00'),
+(2, 1, '2024-01-02 11:00:00'),
+(3, 2, '2024-01-03 12:00:00'),
+(4, 2, '2024-01-04 13:00:00'),
+(5, 3, '2024-01-05 14:00:00');
 
 -- Tạo bảng food
 CREATE TABLE food (
@@ -53,6 +83,20 @@ CREATE TABLE food_type (
     type_name VARCHAR(50)
 );
 
+-- Thêm dữ liệu cho bảng food_type
+INSERT INTO food_type (type_name) VALUES
+('Món chính'),
+('Món phụ'),
+('Tráng miệng'),
+('Đồ uống');
+
+-- Thêm dữ liệu cho bảng food
+INSERT INTO food (food_name, image, price, description, type_id) VALUES
+('Cơm gà', 'https://picsum.photos/200/300', 50000, 'Cơm gà xối mỡ', 1),
+('Phở bò', 'https://picsum.photos/200/300', 60000, 'Phở bò tái nạm', 1),
+('Trà sữa', 'https://picsum.photos/200/300', 30000, 'Trà sữa trân châu', 4),
+('Bánh flan', 'https://picsum.photos/200/300', 20000, 'Bánh flan caramel', 3);
+
 -- Tạo bảng sub_food
 CREATE TABLE sub_food (
     sub_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -61,6 +105,13 @@ CREATE TABLE sub_food (
     food_id INT,
     FOREIGN KEY (food_id) REFERENCES food(food_id)
 );
+
+-- Thêm dữ liệu cho bảng sub_food
+INSERT INTO sub_food (sub_name, sub_price, food_id) VALUES
+('Thêm trân châu', 5000, 3),
+('Thêm thịt gà', 10000, 1),
+('Thêm thịt bò', 15000, 2),
+('Thêm trứng', 5000, 1);
 
 -- Tạo bảng order
 CREATE TABLE orders (
@@ -72,6 +123,13 @@ CREATE TABLE orders (
     FOREIGN KEY (user_id) REFERENCES user(user_id),
     FOREIGN KEY (food_id) REFERENCES food(food_id)
 );
+
+-- Thêm dữ liệu cho bảng orders
+INSERT INTO orders (user_id, food_id, amount, code, arr_sub_id) VALUES
+(1, 1, 2, 'ORDER001', '2,4'),
+(2, 2, 1, 'ORDER002', '3'),
+(3, 3, 3, 'ORDER003', '1'),
+(4, 4, 2, 'ORDER004', NULL);
 
 -- Thêm khóa ngoại cho bảng food
 ALTER TABLE food
